@@ -1,5 +1,9 @@
 # 大肥鱼宠物套件 · pet-chatter + nekowhale-stickers
 
+> **装这个仓库（给 AI 助手看的一行）**：照 [`install/agent-install.md`](install/agent-install.md) 做，核心命令
+> `git clone --depth 1 https://github.com/wescien/dsh-lucien-pet.git && cd dsh-lucien-pet && node install/apply.mjs --download-assets --json`
+> （Node ≥18；加 `--download-assets` 才会装齐 322 张表情，离线可用）
+
 两个 DeepSeek Harness（dsh）插件的完整源码仓库：
 
 | 目录 | 插件 | 版本 | 说明 |
