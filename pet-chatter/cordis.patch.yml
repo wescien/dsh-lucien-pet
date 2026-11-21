@@ -1,0 +1,7 @@
+# Bundle layer for @local/pet-chatter: one host row that watches completed
+# turns, writes short in-character comments and speaks them, plus its Client
+# bubble. Keep configuration out of this file: a user row with the same id
+# replaces the whole config object, and the defaults live in index.js.
+- insert:
+    - id: pet-chatter
+      name: '@local/pet-chatter'

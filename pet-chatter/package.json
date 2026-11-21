@@ -1,0 +1,41 @@
+{
+    "name":  "@local/pet-chatter",
+    "version":  "0.8.4",
+    "private":  true,
+    "description":  "让大肥鱼看着你的对话，在它的右上角冒泡吐槽、出鬼点子，并用可爱女声念出来。",
+    "type":  "module",
+    "exports":  {
+                    ".":  "./index.js",
+                    "./client":  "./client.js",
+                    "./lib/pure.js":  "./lib/pure.js",
+                    "./locale/*.json":  "./locale/*.json",
+                    "./icon":  "./icon.svg"
+                },
+    "files":  [
+                  "index.js",
+                  "tts.js",
+                  "client.js",
+                  "cordis.patch.yml",
+                  "lib/*.js",
+                  "tools/*.mjs",
+                  "locale/*.json",
+                  "icon.svg",
+                  "README.md",
+                  "assets/*.mp3",
+                  "assets/*.png",
+                  "assets/reactions/*.mp3"
+              ],
+    "dsh":  {
+                "bundle":  {
+                               "patch":  "./cordis.patch.yml"
+                           },
+                "client":  {
+                               "platform":  "web",
+                               "immediately":  true
+                           }
+            },
+    "dependencies":  {
+                         "@andresaya/edge-tts":  "^1.9.1",
+                         "@deepseek-ai/schemastery":  "^3.19.0"
+                     }
+}
