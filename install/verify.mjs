@@ -150,6 +150,6 @@ if (wantJson) {
     if (!c.pass && c.hint) console.log(`     ↳ ${c.hint}`);
   });
   console.log(`\n${ok ? '全部通过：和作者那份配置一致。' : '有项目不合格，见上面 ↳ 提示。'}`);
-  console.log('第 6 条（重启后肉眼确认桌宠与气泡）需要你自己看，脚本查不到。');
+  console.log('最后一条（重启后肉眼确认桌宠与气泡）需要你自己看，脚本查不到。');
 }
 process.exit(ok ? 0 : 1);
