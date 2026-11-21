@@ -45,21 +45,18 @@ node install/apply.mjs --download-assets --json
 3. 在 profile 目录跑 `pnpm install`（自动找 dsh 自带的 pnpm）
 4. 有 `--download-assets` 时把素材解压到 `$DSH_HOME/nekowhale-stickers/`
 
-## 3. 验证
+## 3. 验证（跑脚本，别靠眼看）
 
 ```bash
-# a) profile 里登记了两个插件
-grep -E 'pet-chatter|nekowhale-stickers' ~/.dsh/profiles/*/package.json
-
-# b) 配置追加了两个 id，且原有条目还在
-grep -n '^- id:' ~/.dsh/profiles/*/cordis.patch.yml
-
-# c) 素材（只有加 --download-assets 才有）
-ls ~/.dsh/nekowhale-stickers/packs | wc -l     # 期望 2
-find ~/.dsh/nekowhale-stickers/packs -name '*.gif' | wc -l   # 期望 322
+node install/verify.mjs
 ```
 
-三条都符合，告诉用户：**完全退出 dsh 再打开**（只刷新网页不够），然后看右下角有没有大肥鱼桌宠。
+它会按 AGENTS.md 第 2 节逐条核对（版本 / 38 个配置键 / 音色 / 233px / 已登记 / 322 张），
+输出 6 行 ✅/❌ 和一行总结，全过 exit 0，有失败 exit 1 并给出该查哪个文件。
+
+要转述给用户，加 `--json` 拿结构化结果；**把这段输出原样贴出来**，比「装好了」可信。
+
+剩下第 7 条（重启后右下角有桌宠、聊完一轮冒气泡出声）脚本查不到，告诉用户：**完全退出 dsh 再打开**（只刷新网页不够），然后自己看。
 
 ## 4. 装完长什么样
 

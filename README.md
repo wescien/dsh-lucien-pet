@@ -21,9 +21,13 @@ AI 助手照 [`install/agent-install.md`](install/agent-install.md) 做完就行
 git clone --depth 1 https://github.com/wescien/dsh-lucien-pet.git
 cd dsh-lucien-pet
 node install/apply.mjs --download-assets --json
+node install/verify.mjs            # 自检：6 行 ✅/❌，全过 exit 0
 ```
 
 装完**完全退出 dsh 再打开**，右下角就是那只 233px 的大肥鱼，38 项气泡参数、音色、桌宠特效与作者那台一致。
+
+`verify.mjs` 让「装好了」变成可核对的输出（版本 / 38 个键 / 音色 / 233px / 已登记 / 322 张），
+比口头保证可靠；最后一条「重启后有桌宠、会冒泡出声」只能人看。
 
 | 参数 | 作用 |
 |---|---|

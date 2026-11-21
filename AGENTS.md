@@ -17,16 +17,19 @@ node install/apply.mjs --download-assets --json
   `"$HOME/.dsh/dsh-runtimes/"*/dependencies/node/bin/node.exe install/apply.mjs --download-assets --json`
 - 装完让用户**完全退出 dsh 再打开**，只刷新网页不够。
 
-## 2. 「一样的大肥鱼」= 这 6 条，逐条可查
+## 2. 「一样的大肥鱼」= 这 7 条，逐条可查
+
+装完跑 `node install/verify.mjs` 自动核对前 6 条（全过 exit 0，`--json` 给结构化结果）。
 
 | # | 标准 | 怎么查 |
 |---|---|---|
-| 1 | 两个插件版本是 `pet-chatter 0.8.4` + `dsh-nekowhale-stickers 1.1.1` | 看两个子目录的 `package.json` 的 `version` |
+| 1 | 两个插件版本是 `pet-chatter 0.8.4` + `dsh-nekowhale-stickers 1.1.1` | 两个子目录 `package.json` 的 `version` |
 | 2 | 气泡配置 **38 个键**，不是默认值 | `cordis.patch.yml` 里 `id: pet-chatter` 那段 `config` 下的键数 = 38 |
-| 3 | 声音是 `zh-CN-XiaoyiNeural` 女声，语速 +8%、音调 +15Hz、音量 0.9 | 同上，看 `voice` / `rate` / `pitch` / `volume` |
+| 3 | 声音是 `zh-CN-XiaoyiNeural`，语速 +8%、音调 +15Hz、音量 0.9 | 同上，看 `voice` / `rate` / `pitch` / `volume` |
 | 4 | 桌宠高度 **233px**，打字机式冒泡 | `id: nekowhale-stickers` 那段有 `petHeight: 233` |
-| 5 | 表情 **322 张**离线可用（约 407 MB） | `packs/**/*.gif` 计数 = 322 |
-| 6 | 装完 `ok` 为 `true`，重启后右下角有桌宠、聊完一轮会冒气泡出声 | 安装器 `--json` 输出 + 用户肉眼确认 |
+| 5 | profile 里两个插件都登记了（依赖 2 项 + bundles 2 项） | profile 的 `package.json` |
+| 6 | 表情 **322 张**离线可用（约 407 MB） | `packs/**/*.gif` 计数 = 322（`verify.mjs` 会数） |
+| 7 | 重启后右下角有桌宠，聊完一轮冒气泡并出声 | **只能人看**，脚本查不到 |
 
 不要求一致的：气泡**内容**（取决于用户自己聊什么）、dsh 版本（版本差太多可能忽略某些配置项）。
 
