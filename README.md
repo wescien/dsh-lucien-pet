@@ -25,18 +25,61 @@
     └── client/ui/               # 面板与字体资源
 ```
 
-## 安装
+## 安装（复刻作者那台的一模一样体验）
 
-两个插件都通过 dsh 的 bundle 补丁机制挂载。把目录放进插件目录后启用即可：
+两个插件都通过 dsh 的 bundle 补丁机制挂载。**光装插件只得到默认设置**，作者调过的那 38 个气泡参数、音色、桌宠高度都在 `install/profile.patch.yml` 里 —— 下面这条路会连配置一起装上。
+
+### 一键（Windows）
 
 ```powershell
-# 吐槽气泡
-dsh plugin add .\pet-chatter
-# 表情包
-dsh plugin add .\dsh-nekowhale-stickers
+git clone https://github.com/wescien/dsh-lucien-pet.git
+cd dsh-lucien-pet
+powershell -ExecutionPolicy Bypass -File .\install\apply.ps1
 ```
 
-`node_modules/` 未纳入版本库，拉下来后按各自的 `package.json` 装依赖（`pnpm install`）。
+脚本会先备份、再改三处、最后装依赖，重复执行安全：
+
+1. `~/.dsh/profiles/desktop/package.json`：登记两个本地插件依赖
+2. 同文件的 `dsh.profile.bundles`：追加两个插件
+3. `~/.dsh/profiles/desktop/cordis.patch.yml`：追加作者的完整配置
+4. 在 profile 目录跑 `pnpm install`
+
+装完**完全退出 dsh 再打开**（只刷新网页不够）。
+
+### 手动
+
+```powershell
+# 1. 依赖
+cd pet-chatter; pnpm install; cd ..
+cd dsh-nekowhale-stickers; pnpm install; cd ..
+
+# 2. 两个目录都挂进 profile（任一方式）
+dsh plugin add .\pet-chatter
+dsh plugin add .\dsh-nekowhale-stickers
+# 或者手动编辑 profile 的 package.json：dependencies 写 link: 路径，
+# dsh.profile.bundles 里追加包名
+
+# 3. 把 install/profile.patch.yml 的内容追加到
+#    ~/.dsh/profiles/desktop/cordis.patch.yml 末尾
+
+# 4. 在 profile 目录执行 pnpm install，然后重启 dsh
+```
+
+### 装完哪些东西是一样的
+
+| 项目 | 是否一致 | 说明 |
+|---|---|---|
+| 插件版本 | ✅ | pet-chatter 0.8.4 + stickers 1.1.1，锁定在仓库里 |
+| 气泡行为 | ✅ | 38 项参数全量拷贝：频率 often、每次间隔 1 分钟、每小时上限 8 |
+| 人设与称呼 | ✅ | 称呼「老大」、性格 balance、口头风格「爱用颜文字，爱讲笑话」 |
+| 音色 | ✅ | `zh-CN-XiaoyiNeural`，语速 +8%，音调 +15Hz，音量 0.9 |
+| 桌宠与特效 | ✅ | 桌宠高度 233px、打字机特效、原生气泡、点击/拖拽反应概率 |
+| 表情包全集 | ⚠️ 需联网 | 322 张图从 `kiriyuki.com` 按需下载；想一次拉齐 560 MB，把配置里的 `autoSync: startup` 打开 |
+| 语音发声 | ⚠️ 需联网 | Edge 神经语音是微软在线服务，断网会自动降级成系统语音 |
+| 气泡内容 | ❌ 不会一样 | 气泡是对你当轮对话的实时短评，内容取决于你聊了什么 |
+| dsh 版本 | ❌ 需自备 | 本配置在 dsh 0.2.x 上验证；版本差异可能导致配置项被忽略 |
+
+`node_modules/` 未纳入版本库，`pnpm-lock.yaml` 已锁定到具体版本（`pnpm install --frozen-lockfile` 可完全复现）。
 
 ## 许可与来源
 

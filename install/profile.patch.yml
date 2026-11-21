@@ -1,0 +1,65 @@
+# 大肥鱼「一模一样体验」配置片段
+#
+# 用法：把下面两个条目整体追加到你自己的 profile 补丁文件末尾：
+#   ~/.dsh/profiles/desktop/cordis.patch.yml
+# 如果你的 profile 名字不是 desktop，把路径里的 desktop 换成你的。
+#
+# 这两段是从作者本人电脑上正在跑的那份配置原样拷贝出来的，
+# 逐键与插件 schema 核对过：pet-chatter 38 个配置项一个不多一个不少。
+#
+# ──────────────────────────────────────────────────────────────
+
+- id: pet-chatter
+  name: "@local/pet-chatter"
+  config:
+    enabled: true
+    personality: balance
+    address: "老大"
+    persona: "爱用颜文字，爱讲笑话"
+    ideaChance: 0.18
+    roastChance: 0.15
+    frequency: often
+    minGapMinutes: 1
+    maxPerHour: 8
+    quietHours: ""
+    tts: auto
+    voice: zh-CN-XiaoyiNeural
+    rate: "+8%"
+    pitch: +15Hz
+    volume: 0.9
+    voiceChance: 1
+    expressive: true
+    nightAuto: false
+    nightHours: "01:00-08:00"
+    bedtime: ""
+    audioAlertText: "老大老大，音频失效辣"
+    bedtimeQuietMinutes: 20
+    idleEnabled: true
+    idleMinutes: 1
+    effects: typewriter
+    bubbleStyle: native
+    anchor: pet
+    stickerChance: 1
+    petReactions: true
+    clickBubbleChance: 0.8
+    dragFeedback: true
+    dragBubbleChance: 0.8
+    bubbleGapSeconds: 5
+    actionBiasChance: 0.8
+    chatAgent: true
+    chatReasoning: low
+    chatCompactPercent: 72
+    queueTtlSeconds: 120
+  disabled: false
+
+- id: nekowhale-stickers
+  name: dsh-nekowhale-stickers
+  config:
+    # 作者本机写的是 http://127.0.0.1:43110（dsh 网页服务端口）。
+    # 端口不一样的人抄过去图片链接会打不开，所以这里注释掉：
+    # 留空时插件自动用你自己的 dsh 网页服务地址，效果一致且不用改。
+    # publicBaseUrl: http://127.0.0.1:43110
+    petHeight: 233
+    # 想一次拉齐 322 张图（作者本机的状态），把下面这行打开：
+    # autoSync: startup
+  disabled: false
