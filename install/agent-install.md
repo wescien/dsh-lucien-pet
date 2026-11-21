@@ -20,6 +20,13 @@ git clone --depth 1 https://github.com/wescien/dsh-lucien-pet.git
 cd dsh-lucien-pet
 ```
 
+没有 git 的机器，用 tar 包代替（Windows 自带 `tar`，macOS/Linux 也有）：
+
+```powershell
+curl -L -o dsh-lucien-pet.tar.gz https://codeload.github.com/wescien/dsh-lucien-pet/tar.gz/refs/heads/main
+mkdir dsh-lucien-pet && tar -xzf dsh-lucien-pet.tar.gz -C dsh-lucien-pet --strip-components=1
+```
+
 ## 2. 安装（一条命令）
 
 ```bash
