@@ -33,6 +33,8 @@ node install/apply.mjs --download-assets --json
 
 不要求一致的：气泡**内容**（取决于用户自己聊什么）、dsh 版本（版本差太多可能忽略某些配置项）。
 
+**第 6 条失败不算安装失败**：素材包在 GitHub Releases 上，国内网络常下不动；此时 1–5 条通过就说明插件已装好，表情会在用到时从 `kiriyuki.com` 按需拉取（国内可访问）。安装器遇到这种情况会打警告但 `ok` 仍为 `true`。转告用户「先这样用，网络好时补下素材包」即可。
+
 ## 3. 不要做
 
 - 不要改 `pet-chatter/` 与 `dsh-nekowhale-stickers/` 里的任何文件（下游要求原样）。

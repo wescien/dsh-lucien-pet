@@ -23,7 +23,7 @@
  */
 
 import { spawnSync } from 'node:child_process';
-import { createWriteStream, existsSync, mkdirSync, readFileSync, readdirSync, renameSync, statSync, writeFileSync } from 'node:fs';
+import { createWriteStream, existsSync, mkdirSync, readFileSync, readdirSync, renameSync, statSync, unlinkSync, writeFileSync } from 'node:fs';
 import { homedir, tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { Readable } from 'node:stream';
@@ -303,7 +303,7 @@ function countGifs(dir) {
 async function download(url, dest) {
   say(`  下载 ${url}`);
   const res = await fetch(url, { redirect: 'follow', headers: { 'user-agent': 'dsh-lucien-pet-installer' } });
-  if (!res.ok) die(`下载失败：HTTP ${res.status}（${url}）`);
+  if (!res.ok) throw new Error(`下载失败：HTTP ${res.status}（${url}）`);
   const total = Number(res.headers.get('content-length') || 0);
   let got = 0;
   let lastPct = -10;
@@ -317,10 +317,18 @@ async function download(url, dest) {
       if (!args.json) process.stdout.write(`     ${pct}% (${(got / 1048576).toFixed(0)}/${(total / 1048576).toFixed(0)} MB)\r`);
     }
   });
-  await pipeline(stream, createWriteStream(dest));
+  try {
+    await pipeline(stream, createWriteStream(dest));
+  } catch (err) {
+    try { unlinkSync(dest); } catch { /* 忽略 */ }
+    throw new Error(`下载中断：${err.message ?? err}`);
+  }
   if (!args.json) process.stdout.write('\n');
   const size = statSync(dest).size;
-  if (size < 50 * 1024 * 1024) die(`下载的文件只有 ${size} 字节，明显不对，已中止`);
+  if (size < 50 * 1024 * 1024) {
+    try { unlinkSync(dest); } catch { /* 忽略 */ }
+    throw new Error(`下载的文件只有 ${size} 字节，明显不对，已中止`);
+  }
   say(`  下载完成 ${(size / 1048576).toFixed(0)} MB`);
   return size;
 }
@@ -375,7 +383,7 @@ async function setupAssets() {
   }
 
   const ok = extract(zip, DATA_DIR);
-  if (!ok) die(`解压失败：系统里没有可用的解压工具（tar / unzip / Expand-Archive）。\n请手动把 ${zip} 解压到 ${DATA_DIR}`);
+  if (!ok) throw new Error(`解压失败：系统里没有可用的解压工具（tar / unzip / Expand-Archive）。\n请手动把 ${zip} 解压到 ${DATA_DIR}`);
   if (downloaded) {
     try { renameSync(zip, zip + '.done'); } catch { /* 忽略 */ }
   }
@@ -396,7 +404,16 @@ try {
   installDeps();
 
   say('\n[4/4] 表情素材');
-  const assets = await setupAssets();
+  let assets;
+  try {
+    assets = await setupAssets();
+  } catch (err) {
+    // 素材是可选增强：插件本身不依赖它，缺了会在用图时从 kiriyuki.com 按需拉取。
+    assets = { dir: DATA_DIR, gifs: countGifs(DATA_DIR), failed: true, error: String(err.message ?? err) };
+    warn(`表情素材没装上：${err.message ?? err}`);
+    warn('这不影响插件本身：第一次用到表情时会从 kiriyuki.com 按需拉取（需联网）。');
+    warn('想补成离线全量，等网络好点重跑：node install/apply.mjs --download-assets');
+  }
 
   result.summary = { profile: PROFILE, packageJson: pkg, patch: yml, assets };
 } catch (err) {

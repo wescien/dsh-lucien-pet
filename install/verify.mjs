@@ -136,7 +136,7 @@ let bytes = 0;
 })(join(dataDir, 'packs'));
 add('stickers', '表情素材', '322 张 GIF（约 407 MB）',
   `${gifs} 张 / ${(bytes / 1024 / 1024).toFixed(1)} MB`, gifs === 322,
-  `检查 ${join(dataDir, 'packs')}；重跑安装器加 --download-assets`);
+  `检查 ${join(dataDir, 'packs')}；补全请重跑安装器加 --download-assets。注意：不加也能用，插件会在用图时从 kiriyuki.com 按需拉取，只是不离线`);
 
 // ── 输出 ─────────────────────────────────────────────────────
 const ok = checks.every((c) => c.pass);

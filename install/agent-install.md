@@ -58,6 +58,10 @@ node install/verify.mjs
 
 剩下第 7 条（重启后右下角有桌宠、聊完一轮冒气泡出声）脚本查不到，告诉用户：**完全退出 dsh 再打开**（只刷新网页不够），然后自己看。
 
+**第 6 条（表情素材）失败不算安装失败**：素材包在 GitHub Releases 上，国内网络常下不动，安装器此时会打警告但 `ok` 仍是 `true`。插件照样能用 —— 表情会在用到时从 `kiriyuki.com` 按需拉取（国内可访问）。告诉用户「先这样用，网络好时再补」，补法：`node install/apply.mjs --download-assets`。
+
+注意：`github.com`、`raw.githubusercontent.com` 在国内的可达性时好时坏，但**不需要 VPN**；`npm` 源慢可换镜像。安装只需要：能 clone 到 GitHub、能拉到 npm 依赖。
+
 ## 4. 装完长什么样
 
 - 右下角一只 233px 高的大肥鱼，会跟着聊天气泡冒吐槽、打字机特效、用 `zh-CN-XiaoyiNeural` 念出来，称呼用户「老大」
